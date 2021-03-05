@@ -1,14 +1,13 @@
 ---
 # tasks file for osp.servers
-- debug: var=item
-  loop: "{{ osp_servers.values() | list }}"
+- debug: var=osp_servers.values() | list
 
 - name: Create server instances
   os_server:
     cloud: openstack
     name: "{{ item.name }}"
     image: "{{ item.image }}"
-    meta: "group={{ item.meta.group }},deployment_name={{ item.meta.deployment_name }}"
+    meta: "group={{ item.meta('group') }},deployment_name={{ item.meta('deployment_name') }}"
     flavor: "{{ item.flavor }}"
     security_groups: "{{ item.security_group }}"
     key_name: "{{ item.key_name }}"
