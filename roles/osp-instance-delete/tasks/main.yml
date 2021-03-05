@@ -10,5 +10,6 @@
 - name: Delete instances
   os_server:
     name: "{{ item.id }}"
+    cloud: openstack
     state: absent
   with_items: "{{result.openstack_servers}}"
