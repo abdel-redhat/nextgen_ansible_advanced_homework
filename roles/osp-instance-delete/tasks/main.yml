@@ -5,6 +5,8 @@
     cloud: openstack
   register: result
 
+- debug: var=result
+
 - name: Delete instances
   os_server:
     name: "{{ item.id }}"
