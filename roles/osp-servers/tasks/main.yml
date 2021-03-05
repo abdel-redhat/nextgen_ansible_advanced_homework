@@ -1,8 +1,5 @@
 ---
 # tasks file for osp.servers
-- debug:
-    msg: "{{ osp_servers.values() | list }}"
-
 - name: Create server instances
   os_server:
     cloud: openstack
@@ -40,7 +37,7 @@
     cloud: openstack
     state: present
     reuse: yes
-    server: "{{ item.item.instance_name }}"
+    server: "{{ item.item.name }}"
     network: ext_network
     wait: true
     timeout: 180
