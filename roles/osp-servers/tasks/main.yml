@@ -1,5 +1,8 @@
 ---
 # tasks file for osp.servers
+- debug: var=item
+  loop: "{{ osp_servers.values() | list }}"
+
 - name: Create server instances
   os_server:
     cloud: openstack
