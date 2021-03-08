@@ -10,8 +10,10 @@
   - name: Set frontend server ip address fact
     set_fact: 
        frontend_ip: "{{ item.public_v4 }}"
-    when: "item.name==frontend"
+    when: item.name=='frontend'
     with_items: "{{result.openstack_servers}}"
+
+  - debug: var=frontend_ip
 
   - name: Curl frontend website
     uri:
