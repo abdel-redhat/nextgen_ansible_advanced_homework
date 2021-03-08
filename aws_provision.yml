@@ -1,6 +1,5 @@
 ---
 - hosts: workstation
-  #connection: local
   become: true
   gather_facts: false
   tasks:
