@@ -1,6 +1,6 @@
 # Add the app-instances private_ip_address to the aws dynamic inventory group: apps
 
-- hosts: tag_AnsibleGroup_apps
+- hosts: tag_AnsibleGroup_apps:tag_AnsibleGroup_bastions
   gather_facts: false
   become: false
   tasks:
@@ -9,7 +9,8 @@
       #debug:
       #  msg: "{{ hostvars[item].network_interfaces[0].private_ip_address}}"
       with_items: "{{ groups.tag_AnsibleGroup_apps }}"
-      delegate_to: localhost
+      delegate_to: "{{ groups.tag_AnsibleGroup_bastions[0] }}"
+      become: true
       run_once: true
 
 # Setup front-end load balancer tier
