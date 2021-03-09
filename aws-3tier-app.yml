@@ -23,7 +23,7 @@
       - debug: var=org
 
       - name: get tower inventory
-        command: "tower-cli inventory get --name {{ tower_inventory }} --organization {{ org }} --insecure"
+        command: "tower-cli inventory get --name {{ tower_inventory }} --organization Default --insecure"
         register: inventory
 
       - debug: var=inventory
