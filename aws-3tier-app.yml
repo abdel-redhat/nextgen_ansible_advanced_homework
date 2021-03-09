@@ -9,7 +9,7 @@
       - "tower-cli config host tower1.{{tower_guid}}.example.opentlc.com"
       - "tower-cli config username admin"
       - "tower-cli config password r3dh4t1!"
-    tower_inventory: "Prod Three tier inventory"
+    tower_inventory: "Prod-Three-tier-inventory"
   tasks:
     - block:
       - name: add tower-cli config
