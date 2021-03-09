@@ -1,3 +1,14 @@
+# Add the app-instances private_ip_address to the aws dynamic inventory group: apps
+
+- hosts: tag_AnsibleGroup_bastions
+  gather_facts: true
+  become: true
+  tasks:
+    - name: add app-instances private_ip_address to the inventory group: apps
+        shell: tower-cli host associate  --host "{{ item.hostvars['network_interfaces']['private_ip_address']}}" --group "apps"
+      with_items: "{{ groups.tag_AnsibleGroup_apps }}"
+
+# Setup front-end load balancer tier
 
 - name: setup load-balancer tier
   hosts: tag_AnsibleGroup_frontends
@@ -15,7 +26,7 @@
   roles:
     - {name: base-config, tags: base-config}
     - {name: app-tier, tags: [apps, tomcat]}
-
+        
 # Setup database tier
 
 - name: setup database tier
