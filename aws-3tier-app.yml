@@ -4,12 +4,12 @@
   gather_facts: false
   become: false
   vars:
+    # The 'tower_guid' var is set as extra-variable in the tower job-template executing this playbook
     tower_config_commands:
       - "tower-cli config host tower1.{{tower_guid}}.example.opentlc.com"
       - "tower-cli config username admin"
       - "tower-cli config password r3dh4t1!"
   tasks:
-    # The 'tower_guid' var is set as extra-variable in the tower job-template executing this playbook
     - block:
       - name: add tower_cli config
         command: "{{ item }}"
