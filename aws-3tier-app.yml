@@ -1,6 +1,7 @@
 # Add the app-instances private_ip_address to the aws dynamic inventory group: apps
 
-- hosts: tag_AnsibleGroup_apps:tag_AnsibleGroup_bastions
+- name: add apps private ip-addresses to inventory group
+  hosts: tag_AnsibleGroup_apps:tag_AnsibleGroup_bastions
   gather_facts: false
   become: false
   vars:
@@ -9,27 +10,22 @@
       - "tower-cli config host tower1.{{tower_guid}}.example.opentlc.com"
       - "tower-cli config username admin"
       - "tower-cli config password r3dh4t1!"
-    tower_inventory: "Prod_Three_tier_inventory"
+    tower_inventory: "Prod Three tier inventory"
   tasks:
     - block:
       - name: add tower-cli config
         command: "{{ item }}"
         loop: "{{ tower_config_commands }}"
       
-      #- name: get tower organization
-      #  command: "tower-cli organization get --name Default --insecure"
-      #  register: org
- 
-      #- debug: var=org
-
-      - name: get tower inventory
-        command: "tower-cli inventory get --name {{ tower_inventory }} --organization Default --insecure"
-        register: inventory
-
-      - debug: var=inventory
-
       - name: add aws app-instances private_ip_address as inventory hosts
-        command: "tower-cli host create --name {{ hostvars[item].network_interfaces[0].private_ip_address}} -i {{ tower_inventory }} --insecure"
+        tower_host:
+          name: "{{ hostvars[item].network_interfaces[0].private_ip_address}}"
+          inventory: "{{ tower_inventory }}"
+          state: present
+          tower_host: tower1.{{tower_guid}}.example.opentlc.com
+          tower_username: admin
+          tower_password: r3dh4t1!
+          tower_verify_ssl: no
         with_items: "{{ groups.tag_AnsibleGroup_apps }}"
  
       - name: add aws app-instances private_ip_address to the  inventory-group apps
