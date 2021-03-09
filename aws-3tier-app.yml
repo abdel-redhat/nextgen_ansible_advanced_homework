@@ -17,7 +17,7 @@
         loop: "{{ tower_config_commands }}"
       
       - name: get tower organization
-        command: "tower-cli organization get --name default --insecure"
+        command: "tower-cli organization get --name Default --insecure"
         register: org
  
       - debug: var=org
