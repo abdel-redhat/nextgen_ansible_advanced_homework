@@ -15,8 +15,8 @@
         command: "{{ item }}"
         loop: "{{ tower_config_commands }}"
 
-      - name: add app-instances private_ip_address to the inventory group apps
-        command: "tower-cli host associate --host {{ hostvars[item].network_interfaces[0].private_ip_address}} --group apps"
+      - name: add app-instances private_ip_address to the aws inventory-group apps
+        command: "tower-cli host associate --host {{ hostvars[item].network_interfaces[0].private_ip_address}} --group apps --insecure"
         with_items: "{{ groups.tag_AnsibleGroup_apps }}"
 
       delegate_to: "{{ groups.tag_AnsibleGroup_bastions[0] }}"
