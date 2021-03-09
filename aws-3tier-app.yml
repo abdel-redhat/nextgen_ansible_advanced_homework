@@ -5,6 +5,9 @@
   gather_facts: false
   become: true
   tasks:
+    - debug:
+        msg: "{{ groups.tag_AnsibleGroup_apps }}"
+
     - name: add app-instances private_ip_address to the inventory group apps
       #shell: tower-cli host associate  --host "{{ item.hostvars['network_interfaces']['private_ip_address']}}" --group "apps"
       debug:
