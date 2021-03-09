@@ -11,6 +11,7 @@
       - "tower-cli config username admin"
       - "tower-cli config password r3dh4t1!"
     tower_inventory: "Prod Three tier inventory"
+    tower_group: "apps"
   tasks:
     - block:
       - name: add tower-cli config
@@ -29,7 +30,7 @@
         with_items: "{{ groups.tag_AnsibleGroup_apps }}"
  
       - name: add aws app-instances private_ip_address to the  inventory-group apps
-        command: "tower-cli host associate --host {{ hostvars[item].network_interfaces[0].private_ip_address}} --group apps --insecure"
+        command: "tower-cli host associate --host {{ hostvars[item].network_interfaces[0].private_ip_address}} --group {{ tower_group }} --insecure"
         with_items: "{{ groups.tag_AnsibleGroup_apps }}"
 
       delegate_to: "{{ groups.tag_AnsibleGroup_bastions[0] }}"
