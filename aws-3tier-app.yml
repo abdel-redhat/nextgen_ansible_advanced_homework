@@ -5,9 +5,11 @@
   become: false
   tasks:
     - name: add app-instances private_ip_address to the inventory group apps
-      shell: "tower-cli host associate --host {{ hostvars[item].network_interfaces[0].private_ip_address}} --group apps"
-      #debug:
-      #  msg: "{{ hostvars[item].network_interfaces[0].private_ip_address}}"
+      shell:
+        - "tower-cli config host tower1.{{tower_guid}}.example.opentlc.com"
+        - "tower-cli config username admin"
+        - "tower-cli config password 'r3dh4t1!'"
+        - "tower-cli host associate --host {{ hostvars[item].network_interfaces[0].private_ip_address}} --group apps"
       with_items: "{{ groups.tag_AnsibleGroup_apps }}"
       delegate_to: "{{ groups.tag_AnsibleGroup_bastions[0] }}"
       become: true
