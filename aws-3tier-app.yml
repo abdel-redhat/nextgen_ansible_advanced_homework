@@ -1,7 +1,8 @@
 # Add the app-instances private_ip_address to the aws dynamic inventory group: apps
 
-- hosts: tag_AnsibleGroup_bastions
-  gather_facts: true
+- hosts: local
+  connection: local
+  gather_facts: false
   become: true
   tasks:
     - name: add app-instances private_ip_address to the inventory group: apps
