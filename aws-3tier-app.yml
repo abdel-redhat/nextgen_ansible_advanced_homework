@@ -3,15 +3,22 @@
 - hosts: tag_AnsibleGroup_apps:tag_AnsibleGroup_bastions
   gather_facts: false
   become: false
+  vars:
+    tower_config_commands:
+      - "tower-cli config host tower1.{{tower_guid}}.example.opentlc.com"
+      - "tower-cli config username admin"
+      - "tower-cli config password r3dh4t1!"
   tasks:
     # The 'tower_guid' var is set as extra-variable in the tower job-template executing this playbook
-    - name: add app-instances private_ip_address to the inventory group apps
-      command: | 
-        "(tower-cli config host tower1.{{tower_guid}}.example.opentlc.com;
-        tower-cli config username admin;
-        tower-cli config password r3dh4t1!;
-        tower-cli host associate --host {{ hostvars[item].network_interfaces[0].private_ip_address}} --group apps)"
-      with_items: "{{ groups.tag_AnsibleGroup_apps }}"
+    - block:
+      - name: add tower_cli config
+        command: "{{ item }}"
+        loop: "{{ tower_config_commands }}"
+
+      - name: add app-instances private_ip_address to the inventory group apps
+        command: "tower-cli host associate --host {{ hostvars[item].network_interfaces[0].private_ip_address}} --group apps"
+        with_items: "{{ groups.tag_AnsibleGroup_apps }}"
+
       delegate_to: "{{ groups.tag_AnsibleGroup_bastions[0] }}"
       become: true
       run_once: true
