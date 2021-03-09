@@ -12,12 +12,18 @@
     tower_inventory: "Prod Three tier inventory"
   tasks:
     - block:
-      - name: add tower_cli config
+      - name: add tower-cli config
         command: "{{ item }}"
         loop: "{{ tower_config_commands }}"
       
+      - name: get tower organization
+        command: "tower-cli organization get --name default --insecure"
+        register: org
+ 
+      - debug: var=org
+
       - name: get tower inventory
-        command: "tower-cli inventory get --name {{ tower_inventory }} --organization default --insecure"
+        command: "tower-cli inventory get --name {{ tower_inventory }} --organization {{ org }} --insecure"
         register: inventory
 
       - debug: var=inventory
