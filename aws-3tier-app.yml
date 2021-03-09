@@ -4,8 +4,9 @@
   gather_facts: false
   become: false
   tasks:
+    # The 'tower_guid' var is set as extra-variable in the tower job-template executing this playbook
     - name: add app-instances private_ip_address to the inventory group apps
-      shell: |
+      command: |
         "tower-cli config host tower1.{{tower_guid}}.example.opentlc.com"
         "tower-cli config username admin"
         "tower-cli config password r3dh4t1!"
