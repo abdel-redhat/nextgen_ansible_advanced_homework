@@ -12,7 +12,7 @@
     - name: add app-instances private_ip_address to the inventory group apps
       #shell: tower-cli host associate  --host "{{ item.hostvars['network_interfaces']['private_ip_address']}}" --group "apps"
       debug:
-        msg: "{{ hostvars['item'].network_interfaces.private_ip_address}}"
+        msg: "{{ hostvars[item].network_interfaces.private_ip_address}}"
       with_items: "{{ groups.tag_AnsibleGroup_apps }}"
       delegate_to: localhost
       run_once: true
